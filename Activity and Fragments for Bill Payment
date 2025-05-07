@@ -1,0 +1,128 @@
+// MainActivity.java
+package com.example.billpaymentapp;
+
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Load BillPaymentFragment into the Activity
+        if (savedInstanceState == null) {
+            BillPaymentFragment fragment = new BillPaymentFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.commit();
+        }
+    }
+}
+// BillPaymentFragment.java
+package com.example.billpaymentapp;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+
+public class BillPaymentFragment extends Fragment {
+
+    private EditText etAmount, etAccountNumber;
+    private Button btnPay;
+
+    public BillPaymentFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_bill_payment, container, false);
+
+        // Initialize views
+        etAmount = view.findViewById(R.id.etAmount);
+        etAccountNumber = view.findViewById(R.id.etAccountNumber);
+        btnPay = view.findViewById(R.id.btnPay);
+
+        // Set onClick listener for the "Pay" button
+        btnPay.setOnClickListener(v -> {
+            String amount = etAmount.getText().toString();
+            String accountNumber = etAccountNumber.getText().toString();
+
+            // Validate input
+            if (!amount.isEmpty() && !accountNumber.isEmpty()) {
+                Toast.makeText(getActivity(), "Payment of " + amount + " initiated for Account: " + accountNumber, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return view;
+    }
+}
+<!-- activity_main.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container" />
+<!-- activity_main.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container" />
+<!-- fragment_bill_payment.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Amount"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/etAccountNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Account Number"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/btnPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay" />
+</LinearLayout>
+<!-- AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.billpaymentapp">
+
+    <application
+        android:allowBackup="true"
+        android:label="BillPaymentApp"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
