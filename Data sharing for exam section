@@ -1,0 +1,134 @@
+package com.example.examsectionapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText etStudentName, etRollNumber;
+    private Button btnSubmit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etStudentName = findViewById(R.id.etStudentName);
+        etRollNumber = findViewById(R.id.etRollNumber);
+        btnSubmit = findViewById(R.id.btnSubmit);
+
+        // Setting onClick listener for the submit button
+        btnSubmit.setOnClickListener(v -> {
+            String studentName = etStudentName.getText().toString();
+            String rollNumber = etRollNumber.getText().toString();
+
+            if (!studentName.isEmpty() && !rollNumber.isEmpty()) {
+                // Sending data to the second activity
+                Intent intent = new Intent(MainActivity.this, ExamDetailsActivity.class);
+                intent.putExtra("student_name", studentName);
+                intent.putExtra("roll_number", rollNumber);
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+package com.example.examsectionapp;
+
+import android.os.Bundle;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ExamDetailsActivity extends AppCompatActivity {
+
+    private TextView tvStudentName, tvRollNumber;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_exam_details);
+
+        tvStudentName = findViewById(R.id.tvStudentName);
+        tvRollNumber = findViewById(R.id.tvRollNumber);
+
+        // Receiving data from the MainActivity
+        String studentName = getIntent().getStringExtra("student_name");
+        String rollNumber = getIntent().getStringExtra("roll_number");
+
+        // Displaying the received data
+        tvStudentName.setText("Student Name: " + studentName);
+        tvRollNumber.setText("Roll Number: " + rollNumber);
+    }
+}
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etStudentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Student Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etRollNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Roll Number"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvStudentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student Name: "
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvRollNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Roll Number: "
+        android:textSize="18sp" />
+</LinearLayout>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.examsectionapp">
+
+    <application
+        android:allowBackup="true"
+        android:label="ExamSectionApp"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ExamDetailsActivity" />
+    </application>
+
+</manifest>
