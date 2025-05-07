@@ -1,0 +1,62 @@
+// MainActivity.java
+package com.example.onlineshopping;
+
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    WebView webView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        webView = findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient());
+
+        // Enable JavaScript in WebView
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        // Load a URL (online shopping website)
+        webView.loadUrl("https://www.exampleonlineshop.com");
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack(); // Go back to the previous page in WebView
+        } else {
+            super.onBackPressed(); // Exit the activity if no more pages to go back
+        }
+    }
+}
+<!-- activity_main.xml -->
+<android.webkit.WebView
+    android:id="@+id/webView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+<!-- AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.onlineshopping">
+
+    <application
+        android:allowBackup="true"
+        android:label="OnlineShopping"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
