@@ -1,0 +1,65 @@
+// 📁 MainActivity.java
+// Location: java/com/example/fitnessapp/MainActivity.java
+package com.example.fitnessapp;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btnOpenFitnessSite;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnOpenFitnessSite = findViewById(R.id.btnOpenFitnessSite);
+
+        btnOpenFitnessSite.setOnClickListener(v -> {
+            // Implicit intent to open a website
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://www.fitness.com")); // or any fitness URL
+            startActivity(intent);
+        });
+    }
+}
+<!-- 📁 activity_main.xml -->
+<!-- Location: res/layout/activity_main.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <Button
+        android:id="@+id/btnOpenFitnessSite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Fitness Website" />
+</LinearLayout>
+<!-- 📁 AndroidManifest.xml -->
+<!-- Location: manifests/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.fitnessapp">
+
+    <application
+        android:allowBackup="true"
+        android:label="FitnessApp"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+</manifest>
