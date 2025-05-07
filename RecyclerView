@@ -1,0 +1,160 @@
+// MainActivity.java
+package com.example.beautyproducts;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    ArrayList<Product> productList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        productList = new ArrayList<>();
+        productList.add(new Product("Lipstick", "Red", "$10"));
+        productList.add(new Product("Foundation", "Beige", "$15"));
+        productList.add(new Product("Mascara", "Black", "$12"));
+        productList.add(new Product("Eyeliner", "Black", "$8"));
+        productList.add(new Product("Blush", "Pink", "$7"));
+
+        ProductAdapter adapter = new ProductAdapter(productList);
+        recyclerView.setAdapter(adapter);
+    }
+}
+// Product.java (Model Class)
+package com.example.beautyproducts;
+
+public class Product {
+    String name, color, price;
+
+    public Product(String name, String color, String price) {
+        this.name = name;
+        this.color = color;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+}
+// ProductAdapter.java (RecyclerView Adapter)
+package com.example.beautyproducts;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+
+    private ArrayList<Product> productList;
+
+    public ProductAdapter(ArrayList<Product> productList) {
+        this.productList = productList;
+    }
+
+    @Override
+    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item, parent, false);
+        return new ProductViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ProductViewHolder holder, int position) {
+        Product product = productList.get(position);
+        holder.nameTextView.setText(product.getName());
+        holder.colorTextView.setText(product.getColor());
+        holder.priceTextView.setText(product.getPrice());
+    }
+
+    @Override
+    public int getItemCount() {
+        return productList.size();
+    }
+
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+        TextView nameTextView, colorTextView, priceTextView;
+
+        public ProductViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.productName);
+            colorTextView = itemView.findViewById(R.id.productColor);
+            priceTextView = itemView.findViewById(R.id.productPrice);
+        }
+    }
+}
+<!-- activity_main.xml -->
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+<!-- product_item.xml (RecyclerView Item Layout) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product Name" />
+
+    <TextView
+        android:id="@+id/productColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color" />
+
+    <TextView
+        android:id="@+id/productPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price" />
+</LinearLayout>
+<!-- AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.beautyproducts">
+
+    <application
+        android:allowBackup="true"
+        android:label="BeautyProducts"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
